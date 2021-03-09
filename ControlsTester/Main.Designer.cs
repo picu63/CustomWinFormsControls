@@ -33,6 +33,7 @@ namespace ControlsTester
             this.dialogResultLabel = new System.Windows.Forms.Label();
             this.okButton = new System.Windows.Forms.Button();
             this.abortRetryIgnoreButton = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // testNameLabel
@@ -73,11 +74,22 @@ namespace ControlsTester
             this.abortRetryIgnoreButton.UseVisualStyleBackColor = true;
             this.abortRetryIgnoreButton.Click += new System.EventHandler(this.abortRetryIgnore_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(71, 146);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(189, 64);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Object test";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // retryAbortIgnoreButton
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.abortRetryIgnoreButton);
             this.Controls.Add(this.okButton);
             this.Controls.Add(this.dialogResultLabel);
@@ -95,6 +107,7 @@ namespace ControlsTester
         private System.Windows.Forms.Label dialogResultLabel;
         private System.Windows.Forms.Button okButton;
         private System.Windows.Forms.Button abortRetryIgnoreButton;
+        private System.Windows.Forms.Button button1;
     }
 }
 

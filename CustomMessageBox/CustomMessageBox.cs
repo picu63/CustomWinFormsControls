@@ -15,6 +15,7 @@ namespace CustomMessageBoxes
 {
     public partial class CustomMessageBox : Form
     {
+        public MessageBoxButtons BoxButtons { get; set; }
         private static CustomMessageBox _instance;
 
         public string Message
@@ -28,15 +29,24 @@ namespace CustomMessageBoxes
             private set => this.captionLabel.Text = value;
         }
 
-        private List<Button> Buttons => GetAll(this, typeof(Button)).Cast<Button>().ToList();
+        private List<Button> GetAllButtons => GetAll(this, typeof(Button)).Cast<Button>().ToList();
 
         public CustomMessageBox()
         {
             InitializeComponent();
-            Buttons.ForEach(MoveToBottom);
-            //Buttons.ForEach(button => button.Visible = true);
+            GetAllButtons.ForEach(MoveToBottom);
         }
 
+        public CustomMessageBox(string caption, string message)
+        {
+            this.Caption = caption;
+            this.Message = message;
+        }
+
+        /// <summary>
+        /// https://stackoverflow.com/a/3742980
+        /// </summary>
+        /// <param name="value"></param>
         protected override void SetVisibleCore(bool value)
         {
             if (!this.IsHandleCreated)
@@ -47,11 +57,27 @@ namespace CustomMessageBoxes
             base.SetVisibleCore(value);
         }
 
+        public new DialogResult ShowDialog()
+        {
+            InitButtons(BoxButtons);
+            return base.ShowDialog();
+        }
+
         public static DialogResult Show(string text, string caption, MessageBoxButtons buttons)
         {
             GetInstance();
             _instance.Message = text;
             _instance.Caption = caption;
+            _instance.InitButtons(buttons);
+            return _instance.ShowDialog();
+        }
+
+        private void InitButtons(MessageBoxButtons buttons)
+        {
+            if (_instance is null)
+            {
+                _instance = this;
+            }
             switch (buttons)
             {
                 case MessageBoxButtons.OK:
@@ -75,8 +101,6 @@ namespace CustomMessageBoxes
                 default:
                     throw new ArgumentOutOfRangeException(nameof(buttons), buttons, null);
             }
-
-            return _instance.ShowDialog();
         }
 
         private static CustomMessageBox GetInstance()
@@ -152,7 +176,7 @@ namespace CustomMessageBoxes
         /// <param name="buttons"></param>
         private void ShowButtons(List<Button> buttons)
         {
-            Buttons.ForEach(b => b.Visible = false);
+            GetAllButtons.ForEach(b => b.Visible = false);
             buttons.ForEach(b => b.Visible = true);
         }
 
@@ -163,7 +187,7 @@ namespace CustomMessageBoxes
 
         private void yesButton_Click(object sender, EventArgs e)
         {
-            Buttons.ForEach(b => b.Visible = false);
+            GetAllButtons.ForEach(b => b.Visible = false);
             this.DialogResult = DialogResult.Yes;
         }
 

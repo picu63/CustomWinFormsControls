@@ -38,5 +38,15 @@ namespace ControlsTester
 
             CustomMessageBox.Show("Text label", "Ok Test", MessageBoxButtons.AbortRetryIgnore);
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            testNameLabel.Text = "Control clicked: Object test";
+
+            var message = new CustomMessageBox();
+            message.yesButton.Text = "Tak";
+            message.BoxButtons = MessageBoxButtons.YesNo;
+            message.ShowDialog();
+        }
     }
 }
