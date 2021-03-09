@@ -10,7 +10,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 
 namespace CustomMessageBoxes
 {
@@ -30,8 +29,6 @@ namespace CustomMessageBoxes
         }
 
         private List<Button> Buttons => GetAll(this, typeof(Button)).Cast<Button>().ToList();
-
-        private MessageBoxButtons _buttons;
 
         public CustomMessageBox()
         {
@@ -94,36 +91,34 @@ namespace CustomMessageBoxes
 
         private void InitRetryCancel()
         {
-            throw new NotImplementedException();
+            ShowButtons(new List<Button>{retryButton, cancelButton});
         }
 
         private void InitYesNo()
         {
-            throw new NotImplementedException();
+            ShowButtons(new List<Button>{yesButton, noButton});
         }
 
         private void InitYesNoCancel()
         {
-            throw new NotImplementedException();
+            ShowButtons(new List<Button>{yesButton, noButton, cancelButton});
         }
 
         private void InitAbortRetryIgnore()
         {
-            abortButton.Visible = true;
-            retryButton.Visible = true;
-            ignoreButton.Visible = true;
+            ShowButtons(new List<Button> {abortButton, retryButton, ignoreButton});
         }
+
 
         private void InitOKCancel()
         {
-            throw new NotImplementedException();
+            ShowButtons(new List<Button> { okButton, cancelButton });
         }
 
         private void InitOk()
         {
-            var size = this.Size;
-            yesButton.Visible = true;
-            CenterVertical(yesButton);
+            CenterVertical(okButton);
+            ShowButtons(new List<Button>{okButton});
         }
 
         private void CenterVertical(Control control)
@@ -151,6 +146,16 @@ namespace CustomMessageBoxes
                 .Where(c => c.GetType() == type);
         }
 
+        /// <summary>
+        /// Wyświetla podane buttony, ukrywa pozostałe.
+        /// </summary>
+        /// <param name="buttons"></param>
+        private void ShowButtons(List<Button> buttons)
+        {
+            Buttons.ForEach(b => b.Visible = false);
+            buttons.ForEach(b => b.Visible = true);
+        }
+
         private void okButton_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.OK;
@@ -158,6 +163,7 @@ namespace CustomMessageBoxes
 
         private void yesButton_Click(object sender, EventArgs e)
         {
+            Buttons.ForEach(b => b.Visible = false);
             this.DialogResult = DialogResult.Yes;
         }
 

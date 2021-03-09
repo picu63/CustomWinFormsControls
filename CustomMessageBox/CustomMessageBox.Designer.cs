@@ -155,7 +155,6 @@ namespace CustomMessageBoxes
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(677, 375);
-            this.ControlBox = false;
             this.Controls.Add(this.ignoreButton);
             this.Controls.Add(this.abortButton);
             this.Controls.Add(this.cancelButton);
@@ -165,8 +164,10 @@ namespace CustomMessageBoxes
             this.Controls.Add(this.textLabel);
             this.Controls.Add(this.noButton);
             this.Controls.Add(this.yesButton);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "CustomMessageBox";
             this.ShowInTaskbar = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.ResumeLayout(false);
             this.PerformLayout();
 
