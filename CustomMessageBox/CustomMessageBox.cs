@@ -1,14 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Printing;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CustomMessageBoxes
@@ -16,37 +9,36 @@ namespace CustomMessageBoxes
     public partial class CustomMessageBox : Form
     {
         public MessageBoxButtons BoxButtons { get; set; }
-        private static CustomMessageBox _instance;
-
         public string Message
         {
-            get => this.textLabel.Text;
-            private set => this.textLabel.Text = value;
+            get => this.messageTextBox.Text;
+            set => this.messageTextBox.Text = value;
         }
+
         public string Caption
         {
             get => this.captionLabel.Text;
-            private set => this.captionLabel.Text = value;
+            set => this.captionLabel.Text = value;
         }
 
-        private List<Button> GetAllButtons => GetAll(this, typeof(Button)).Cast<Button>().ToList();
+        private static CustomMessageBox _instance;
+
+        private List<Button> Buttons => GetAll(this, typeof(Button)).Cast<Button>().ToList();
 
         public CustomMessageBox()
         {
             InitializeComponent();
-            GetAllButtons.ForEach(MoveToBottom);
+            Buttons.ForEach(MoveToBottom);
         }
 
         public CustomMessageBox(string caption, string message)
         {
+            InitializeComponent();
+            Buttons.ForEach(MoveToBottom);
             this.Caption = caption;
             this.Message = message;
         }
 
-        /// <summary>
-        /// https://stackoverflow.com/a/3742980
-        /// </summary>
-        /// <param name="value"></param>
         protected override void SetVisibleCore(bool value)
         {
             if (!this.IsHandleCreated)
@@ -57,8 +49,10 @@ namespace CustomMessageBoxes
             base.SetVisibleCore(value);
         }
 
+
         public new DialogResult ShowDialog()
         {
+            GetInstance();
             InitButtons(BoxButtons);
             return base.ShowDialog();
         }
@@ -74,32 +68,33 @@ namespace CustomMessageBoxes
 
         private void InitButtons(MessageBoxButtons buttons)
         {
-            if (_instance is null)
-            {
-                _instance = this;
-            }
             switch (buttons)
             {
                 case MessageBoxButtons.OK:
-                    _instance.InitOk();
+                    this.InitOk();
                     break;
                 case MessageBoxButtons.OKCancel:
-                    _instance.InitOKCancel();
+                    this.InitOKCancel();
                     break;
                 case MessageBoxButtons.AbortRetryIgnore:
-                    _instance.InitAbortRetryIgnore();
+                    this.InitAbortRetryIgnore();
                     break;
                 case MessageBoxButtons.YesNoCancel:
-                    _instance.InitYesNoCancel();
+                    this.InitYesNoCancel();
                     break;
                 case MessageBoxButtons.YesNo:
-                    _instance.InitYesNo();
+                    this.InitYesNo();
                     break;
                 case MessageBoxButtons.RetryCancel:
-                    _instance.InitRetryCancel();
+                    this.InitRetryCancel();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(buttons), buttons, null);
+            }
+
+            if (customButton.Visible && customButton.Enabled)
+            {
+                
             }
         }
 
@@ -161,7 +156,7 @@ namespace CustomMessageBoxes
         /// <param name="control"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public IEnumerable<Control> GetAll(Control control, Type type)
+        private IEnumerable<Control> GetAll(Control control, Type type)
         {
             var controls = control.Controls.Cast<Control>();
 
@@ -176,44 +171,56 @@ namespace CustomMessageBoxes
         /// <param name="buttons"></param>
         private void ShowButtons(List<Button> buttons)
         {
-            GetAllButtons.ForEach(b => b.Visible = false);
+            Buttons.ForEach(b => b.Visible = false);
             buttons.ForEach(b => b.Visible = true);
         }
 
         private void okButton_Click(object sender, EventArgs e)
         {
+            Buttons.ForEach(b => b.Visible = false);
             this.DialogResult = DialogResult.OK;
         }
 
         private void yesButton_Click(object sender, EventArgs e)
         {
-            GetAllButtons.ForEach(b => b.Visible = false);
+            Buttons.ForEach(b => b.Visible = false);
             this.DialogResult = DialogResult.Yes;
         }
 
         private void retryButton_Click(object sender, EventArgs e)
         {
+            Buttons.ForEach(b => b.Visible = false);
             this.DialogResult = DialogResult.Retry;
         }
 
         private void noButton_Click(object sender, EventArgs e)
         {
+            Buttons.ForEach(b => b.Visible = false);
             this.DialogResult = DialogResult.No;
         }
 
         private void abortButton_Click(object sender, EventArgs e)
         {
+            Buttons.ForEach(b => b.Visible = false);
             this.DialogResult = DialogResult.Abort;
         }
 
         private void ignoreButton_Click(object sender, EventArgs e)
         {
+            Buttons.ForEach(b => b.Visible = false);
             this.DialogResult = DialogResult.Ignore;
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
+            Buttons.ForEach(b => b.Visible = false);
             this.DialogResult = DialogResult.Cancel;
+        }
+
+        private void customButton_Click(object sender, EventArgs e)
+        {
+            Buttons.ForEach(b => b.Visible = false);
+            this.DialogResult = DialogResult.None;
         }
     }
 }
