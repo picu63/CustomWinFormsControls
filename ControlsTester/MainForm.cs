@@ -53,7 +53,7 @@ namespace ControlsTester
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void ObjectTest_Click(object sender, EventArgs e)
         {
             testNameLabel.Text = "Control clicked: Object test";
 
@@ -63,29 +63,30 @@ namespace ControlsTester
             message.ShowDialog();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void RetryCancel_Click(object sender, EventArgs e)
         {
             testNameLabel.Text = "Control clicked: Retry Cancel";
 
             var result = CustomMessageBox.Show("Text label", "Ok Test", MessageBoxButtons.RetryCancel);
-            if (result == DialogResult.Retry)
-            {
-                MessageBox.Show("Retry Clicked");
-            }
-
-            if (result == DialogResult.Cancel)
-            {
-                MessageBox.Show("Cancel clicked");
-            }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void AbortRetryIgnoreWithCustom_Click(object sender, EventArgs e)
         {
             testNameLabel.Text = "Control clicked: Abort Retry Ignore with Custom";
 
-            var cmb = new CustomMessageBox("Title", "Message", MessageBoxButtons.OK);
+            var cmb = new CustomMessageBox("Title", "Message", MessageBoxButtons.AbortRetryIgnore);
             cmb.CustomButton.Text = "Custom Button";
-            cmb.CustomButton.Click += (_, _) => cmb.Close();
+            cmb.CustomButton.Click += (_, _) =>
+            {
+                MessageBox.Show("Custom Button Clicked!");
+                cmb.Close();
+            };
+            cmb.ShowDialog();
+        }
+
+        private void OKCancel_Click(object sender, EventArgs e)
+        {
+            CustomMessageBox.Show("Title", "Message", MessageBoxButtons.OKCancel);
         }
     }
 }
