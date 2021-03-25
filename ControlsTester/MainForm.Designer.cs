@@ -1,7 +1,7 @@
 ﻿
 namespace ControlsTester
 {
-    partial class retryAbortIgnoreButton
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -34,6 +34,8 @@ namespace ControlsTester
             this.okButton = new System.Windows.Forms.Button();
             this.abortRetryIgnoreButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // testNameLabel
@@ -84,17 +86,39 @@ namespace ControlsTester
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // retryAbortIgnoreButton
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(301, 320);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(189, 64);
+            this.button2.TabIndex = 6;
+            this.button2.Text = "Retry Cancel";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(301, 236);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(189, 64);
+            this.button3.TabIndex = 7;
+            this.button3.Text = "Abort Retry Ignore with Custom";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.abortRetryIgnoreButton);
             this.Controls.Add(this.okButton);
             this.Controls.Add(this.dialogResultLabel);
             this.Controls.Add(this.testNameLabel);
-            this.Name = "retryAbortIgnoreButton";
+            this.Name = "MainForm";
             this.Text = "Controls Tester";
             this.Load += new System.EventHandler(this.Main_Load);
             this.ResumeLayout(false);
@@ -108,6 +132,8 @@ namespace ControlsTester
         private System.Windows.Forms.Button okButton;
         private System.Windows.Forms.Button abortRetryIgnoreButton;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
     }
 }
 

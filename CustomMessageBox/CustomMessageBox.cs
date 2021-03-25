@@ -21,22 +21,45 @@ namespace CustomMessageBoxes
             set => this.captionLabel.Text = value;
         }
 
+        private readonly Size _defaultButtonSize = new(221, 68);
+
+        /// <summary>
+        /// Returns <see cref="DialogResult.None"/>
+        /// </summary>
+        public Button CustomButton
+        {
+            get
+            {
+                hasCustomButton = true;
+                return this.customButton;
+            }
+        }
+
+        public Button OkButton => this.okButton;
+        public Button CancelButton => this.cancelButton;
+        public Button IgnoreButton => this.ignoreButton;
+        public Button YesButton => this.yesButton;
+        public Button NoButton => this.noButton;
+        public Button RetryButton => this.retryButton;
+        public Button AbortButton => this.abortButton;
+
         private static CustomMessageBox _instance;
+        private bool hasCustomButton;
 
         private List<Button> Buttons => GetAll(this, typeof(Button)).Cast<Button>().ToList();
+        private List<Button> EnabledButtons => Buttons.Where(b => b.Enabled).ToList();
 
         public CustomMessageBox()
         {
             InitializeComponent();
-            Buttons.ForEach(MoveToBottom);
         }
 
-        public CustomMessageBox(string caption, string message)
+        public CustomMessageBox(string caption, string message, MessageBoxButtons buttons = MessageBoxButtons.OK)
         {
             InitializeComponent();
-            Buttons.ForEach(MoveToBottom);
             this.Caption = caption;
             this.Message = message;
+            this.BoxButtons = buttons;
         }
 
         protected override void SetVisibleCore(bool value)
@@ -52,18 +75,18 @@ namespace CustomMessageBoxes
 
         public new DialogResult ShowDialog()
         {
-            GetInstance();
             InitButtons(BoxButtons);
             return base.ShowDialog();
         }
 
         public static DialogResult Show(string text, string caption, MessageBoxButtons buttons)
         {
-            GetInstance();
-            _instance.Message = text;
-            _instance.Caption = caption;
-            _instance.InitButtons(buttons);
-            return _instance.ShowDialog();
+            var instance = GetInstance();
+            instance.Message = text;
+            instance.Caption = caption;
+            instance.BoxButtons = buttons;
+            instance.InitButtons(buttons);
+            return instance.ShowDialog();
         }
 
         private void InitButtons(MessageBoxButtons buttons)
@@ -71,31 +94,30 @@ namespace CustomMessageBoxes
             switch (buttons)
             {
                 case MessageBoxButtons.OK:
-                    this.InitOk();
+                    this.ShowOk();
                     break;
                 case MessageBoxButtons.OKCancel:
-                    this.InitOKCancel();
+                    this.ShowOkCancel();
                     break;
                 case MessageBoxButtons.AbortRetryIgnore:
-                    this.InitAbortRetryIgnore();
+                    this.ShowAbortRetryIgnore();
                     break;
                 case MessageBoxButtons.YesNoCancel:
-                    this.InitYesNoCancel();
+                    this.ShowYesNoCancel();
                     break;
                 case MessageBoxButtons.YesNo:
-                    this.InitYesNo();
+                    this.ShowYesNo();
                     break;
                 case MessageBoxButtons.RetryCancel:
-                    this.InitRetryCancel();
+                    this.ShowRetryCancel();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(buttons), buttons, null);
             }
 
-            if (customButton.Visible && customButton.Enabled)
-            {
-                
-            }
+            var enabledButtons = EnabledButtons.Cast<Control>().ToList();
+            this.MoveToBottom(enabledButtons);
+            this.AlignHorizontally(enabledButtons);
         }
 
         private static CustomMessageBox GetInstance()
@@ -108,46 +130,35 @@ namespace CustomMessageBoxes
             return _instance;
         }
 
-        private void InitRetryCancel()
+        private void ShowRetryCancel()
         {
             ShowButtons(new List<Button>{retryButton, cancelButton});
         }
 
-        private void InitYesNo()
+        private void ShowYesNo()
         {
             ShowButtons(new List<Button>{yesButton, noButton});
         }
 
-        private void InitYesNoCancel()
+        private void ShowYesNoCancel()
         {
             ShowButtons(new List<Button>{yesButton, noButton, cancelButton});
         }
 
-        private void InitAbortRetryIgnore()
+        private void ShowAbortRetryIgnore()
         {
             ShowButtons(new List<Button> {abortButton, retryButton, ignoreButton});
         }
 
 
-        private void InitOKCancel()
+        private void ShowOkCancel()
         {
             ShowButtons(new List<Button> { okButton, cancelButton });
         }
 
-        private void InitOk()
+        private void ShowOk()
         {
-            CenterVertical(okButton);
             ShowButtons(new List<Button>{okButton});
-        }
-
-        private void CenterVertical(Control control)
-        {
-            control.Location = new Point(this.Size.Width / 2 - control.Size.Width / 2, control.Location.Y);
-        }
-
-        private void MoveToBottom(Control control)
-        {
-            control.Location = new Point(control.Location.X, this.Size.Height - this.Margin.Bottom - control.Size.Height *2);
         }
 
         /// <summary>
@@ -171,6 +182,12 @@ namespace CustomMessageBoxes
         /// <param name="buttons"></param>
         private void ShowButtons(List<Button> buttons)
         {
+            if (hasCustomButton)
+            {
+                buttons.Add(customButton);
+            }
+            Buttons.ForEach(b => b.Enabled = false);
+            buttons.ForEach(b => b.Enabled = true);
             Buttons.ForEach(b => b.Visible = false);
             buttons.ForEach(b => b.Visible = true);
         }
@@ -215,12 +232,6 @@ namespace CustomMessageBoxes
         {
             Buttons.ForEach(b => b.Visible = false);
             this.DialogResult = DialogResult.Cancel;
-        }
-
-        private void customButton_Click(object sender, EventArgs e)
-        {
-            Buttons.ForEach(b => b.Visible = false);
-            this.DialogResult = DialogResult.None;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace ControlsTester
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new retryAbortIgnoreButton());
+            Application.Run(new MainForm());
         }
     }
 }
