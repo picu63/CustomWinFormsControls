@@ -29,6 +29,13 @@ namespace CustomMessageBoxes
         /// </summary>
         private void InitializeComponent()
         {
+            this.SuspendLayout();
+            // 
+            // CustomMessageBox
+            // 
+            this.ClientSize = new System.Drawing.Size(1102, 469);
+            this.Name = "CustomMessageBox";
+            this.ResumeLayout(false);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CustomMessageBox));
             this.yesButton = new System.Windows.Forms.Button();
             this.noButton = new System.Windows.Forms.Button();

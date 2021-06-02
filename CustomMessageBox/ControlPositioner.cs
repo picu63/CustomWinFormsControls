@@ -31,6 +31,7 @@ namespace CustomMessageBoxes
                 control.Location = new Point(control.Location.X, form.Size.Height - form.Margin.Bottom - control.Size.Height * 2);
             }
         }
+
         private static Point GetCenterPoint(this Control control)
         {
             return new Point(control.Location.X - control.Size.Width / 2, control.Location.Y - control.Size.Height / 2);

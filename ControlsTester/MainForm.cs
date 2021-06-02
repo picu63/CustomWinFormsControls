@@ -60,6 +60,7 @@ namespace ControlsTester
             var message = new CustomMessageBox();
             message.YesButton.Text = "Tak";
             message.BoxButtons = MessageBoxButtons.YesNo;
+            message.SetButtonsSize(new Size(200, 200));
             message.ShowDialog();
         }
 
@@ -87,6 +88,19 @@ namespace ControlsTester
         private void OKCancel_Click(object sender, EventArgs e)
         {
             CustomMessageBox.Show("Title", "Message", MessageBoxButtons.OKCancel);
+        }
+
+        private void exceptionButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CustomMessageBox message = null;
+                message.IgnoreButton.DialogResult = DialogResult.Abort;
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.Show(ex, "My Exception Error");
+            }
         }
     }
 }

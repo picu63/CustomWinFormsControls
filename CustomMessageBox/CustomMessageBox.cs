@@ -21,7 +21,7 @@ namespace CustomMessageBoxes
             set => this.captionLabel.Text = value;
         }
 
-        private readonly Size _defaultButtonSize = new(221, 68);
+        public Size DefaultButtonSize { get; private set; } = (new Size(160, 40));
 
         /// <summary>
         /// Returns <see cref="DialogResult.None"/>
@@ -79,14 +79,31 @@ namespace CustomMessageBoxes
             return base.ShowDialog();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="caption">Title of message box.</param>
+        /// <param name="buttons"></param>
+        /// <returns></returns>
         public static DialogResult Show(string text, string caption, MessageBoxButtons buttons)
         {
             var instance = GetInstance();
             instance.Message = text;
             instance.Caption = caption;
             instance.BoxButtons = buttons;
-            instance.InitButtons(buttons);
+            //instance.InitButtons(buttons);
             return instance.ShowDialog();
+        }
+
+        public static DialogResult Show(Exception ex, string caption)
+        {
+            return Show(ex.ToString(), caption, MessageBoxButtons.OK);
+        }
+
+        public void SetButtonsSize(Size size)
+        {
+            DefaultButtonSize = size;
         }
 
         private void InitButtons(MessageBoxButtons buttons)
@@ -116,8 +133,24 @@ namespace CustomMessageBoxes
             }
 
             var enabledButtons = EnabledButtons.Cast<Control>().ToList();
+            foreach (var b in enabledButtons)
+            {
+                b.Size = DefaultButtonSize;
+            }
             this.MoveToBottom(enabledButtons);
             this.AlignHorizontally(enabledButtons);
+        }
+
+        public void MoveToBottom(List<Control> controls)
+        {
+            var bottomOfTextbox = this.messageTextBox.Location.Y + this.messageTextBox.Size.Height;
+            var bottomOfForm = this.Size.Height - this.Margin.Bottom;
+            var centerBetween = bottomOfForm - (bottomOfForm - bottomOfTextbox)/2;
+
+            foreach (var control in controls)
+            {
+                control.Location = new Point(control.Location.X, centerBetween - control.Height);
+            }
         }
 
         private static CustomMessageBox GetInstance()
@@ -233,5 +266,16 @@ namespace CustomMessageBoxes
             Buttons.ForEach(b => b.Visible = false);
             this.DialogResult = DialogResult.Cancel;
         }
+
+        //private void InitializeComponent()
+        //{
+        //    this.SuspendLayout();
+        //    // 
+        //    // CustomMessageBox
+        //    // 
+        //    this.ClientSize = new System.Drawing.Size(1102, 469);
+        //    this.Name = "CustomMessageBox";
+        //    this.ResumeLayout(false);
+        //}
     }
 }

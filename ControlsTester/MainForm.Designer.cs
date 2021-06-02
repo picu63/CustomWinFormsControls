@@ -37,6 +37,7 @@ namespace ControlsTester
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.exceptionButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // testNameLabel
@@ -123,11 +124,23 @@ namespace ControlsTester
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.OKCancel_Click);
             // 
+            // exceptionButton
+            // 
+            this.exceptionButton.Location = new System.Drawing.Point(610, 427);
+            this.exceptionButton.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.exceptionButton.Name = "exceptionButton";
+            this.exceptionButton.Size = new System.Drawing.Size(216, 85);
+            this.exceptionButton.TabIndex = 9;
+            this.exceptionButton.Text = "Exception";
+            this.exceptionButton.UseVisualStyleBackColor = true;
+            this.exceptionButton.Click += new System.EventHandler(this.exceptionButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(914, 600);
+            this.Controls.Add(this.exceptionButton);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -154,6 +167,7 @@ namespace ControlsTester
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button exceptionButton;
     }
 }
 
