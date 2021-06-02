@@ -98,6 +98,10 @@ namespace CustomMessageBoxes
 
         public static DialogResult Show(Exception ex, string caption)
         {
+            if (string.IsNullOrWhiteSpace(caption))
+            {
+                caption = "Exception in" + ex.Source;
+            }
             return Show(ex.ToString(), caption, MessageBoxButtons.OK);
         }
 

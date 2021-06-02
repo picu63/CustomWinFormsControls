@@ -99,7 +99,7 @@ namespace ControlsTester
             }
             catch (Exception ex)
             {
-                CustomMessageBox.Show(ex, "My Exception Error");
+                CustomMessageBox.Show(ex, null);
             }
         }
     }
